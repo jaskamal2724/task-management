@@ -1,0 +1,1 @@
+for viewing user dashboard got to /dashboard url 
