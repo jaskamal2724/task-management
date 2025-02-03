@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import InputField from "./InputFiled";
 import { useNavigate } from "react-router-dom";
 
+
 const SignUpForm = () => {
   const navigate = useNavigate();
 
@@ -24,6 +25,8 @@ const SignUpForm = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-base-200 transition-colors"> {/* ✅ Dynamic background */}
+
+
       <Card className="w-96 shadow-xl bg-base-100 text-base-content transition-colors"> {/* ✅ Theme-friendly classes */}
         <CardHeader>
           <CardTitle className="text-2xl text-center">Sign Up</CardTitle>
