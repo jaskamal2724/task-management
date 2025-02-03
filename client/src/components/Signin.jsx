@@ -2,15 +2,9 @@ import { useState } from "react";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card"
 import InputField from "./InputFiled";
-import { useNavigate } from "react-router-dom";
 
-
-
-const SignUpForm = () => {
-  const navigate = useNavigate()
-
+const SignIn = () => {
   const [formData, setFormData] = useState({
-    username: "",
     email: "",
     password: ""
   });
@@ -21,25 +15,17 @@ const SignUpForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    navigate("/signin")
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <Card className="w-96 shadow-xl">
         <CardHeader>
-          <CardTitle className="text-2xl text-center">Sign Up</CardTitle>
+          <CardTitle className="text-2xl text-center">Sign In</CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
-            <InputField
-              label="Username"
-              type="text"
-              placeholder="john"
-              value={formData.username}
-              onChange={handleChange}
-              name="username"
-            />
+            
             <InputField
               label="Email"
               type="email"
@@ -56,7 +42,7 @@ const SignUpForm = () => {
               onChange={handleChange}
               name="password"
             />
-            <Button type="submit" className="w-full">Create Account</Button>
+            <Button type="submit" className="w-full">Next</Button>
           </form>
         </CardContent>
       </Card>
@@ -64,4 +50,4 @@ const SignUpForm = () => {
   );
 };
 
-export default SignUpForm;
+export default SignIn;
