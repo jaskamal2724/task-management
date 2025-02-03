@@ -18,7 +18,7 @@ const SignIn = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100" >
       <Card className="w-96 shadow-xl">
         <CardHeader>
           <CardTitle className="text-2xl text-center">Sign In</CardTitle>
@@ -27,6 +27,7 @@ const SignIn = () => {
           <form onSubmit={handleSubmit} className="space-y-4">
             
             <InputField
+              
               label="Email"
               type="email"
               placeholder="john@gmail.com"

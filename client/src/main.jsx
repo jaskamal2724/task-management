@@ -5,8 +5,13 @@ import App from './App.jsx'
 import {RouterProvider, createBrowserRouter } from 'react-router-dom'
 import SignUpForm from './components/SignupForm'
 import SignIn from './components/Signin'
+import Navbar from './components/Navbar'
 
 const router = createBrowserRouter([
+  {
+    path:"*",
+    element:<Navbar/>
+  },
   {
     path:"/",
     element:<SignUpForm/>
@@ -18,6 +23,7 @@ const router = createBrowserRouter([
 ])
 createRoot(document.getElementById('root')).render(
   <StrictMode>
+      <Navbar/>
     <RouterProvider router={router}>
       <App/>
     </RouterProvider>

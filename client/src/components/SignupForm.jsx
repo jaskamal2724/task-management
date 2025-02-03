@@ -1,18 +1,16 @@
 import { useState } from "react";
 import { Button } from "./ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import InputField from "./InputFiled";
 import { useNavigate } from "react-router-dom";
 
-
-
 const SignUpForm = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     username: "",
     email: "",
-    password: ""
+    password: "",
   });
 
   const handleChange = (e) => {
@@ -21,12 +19,12 @@ const SignUpForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    navigate("/signin")
+    navigate("/signin");
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <Card className="w-96 shadow-xl">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-base-200 transition-colors"> {/* ✅ Dynamic background */}
+      <Card className="w-96 shadow-xl bg-base-100 text-base-content transition-colors"> {/* ✅ Theme-friendly classes */}
         <CardHeader>
           <CardTitle className="text-2xl text-center">Sign Up</CardTitle>
         </CardHeader>
