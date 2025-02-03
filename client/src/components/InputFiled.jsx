@@ -1,7 +1,7 @@
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 
-const InputField = ({ label, type, placeholder, value, onChange }) => (
+const InputField = ({ label, type, placeholder, value, onChange,name }) => (
   <div className="mb-4">
     <Label className="block mb-1 text-sm font-medium">{label}</Label>
     <Input
@@ -9,6 +9,7 @@ const InputField = ({ label, type, placeholder, value, onChange }) => (
       placeholder={placeholder}
       value={value}
       onChange={onChange}
+      name={name}
       className="w-full"
     />
   </div>

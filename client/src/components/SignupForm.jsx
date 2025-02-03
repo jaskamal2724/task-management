@@ -16,7 +16,8 @@ const SignUpForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData); // You can send this data to your backend
+    console.log(formData);
+    
   };
 
   return (
@@ -30,7 +31,7 @@ const SignUpForm = () => {
             <InputField
               label="Username"
               type="text"
-              placeholder="Enter your username"
+              placeholder="john"
               value={formData.username}
               onChange={handleChange}
               name="username"
@@ -38,7 +39,7 @@ const SignUpForm = () => {
             <InputField
               label="Email"
               type="email"
-              placeholder="Enter your email"
+              placeholder="john@gmail.com"
               value={formData.email}
               onChange={handleChange}
               name="email"
@@ -46,7 +47,7 @@ const SignUpForm = () => {
             <InputField
               label="Password"
               type="password"
-              placeholder="Enter your password"
+              placeholder="**********"
               value={formData.password}
               onChange={handleChange}
               name="password"
