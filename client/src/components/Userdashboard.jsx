@@ -1,166 +1,163 @@
-import { useState, useEffect } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-
+import React, { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
 import { Input } from "./ui/input";
-import { Textarea } from "./ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "./ui/card";
+import { Label } from "./ui/label";
+import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
+import { Plus, CheckCircle, Circle, Timer } from 'lucide-react';
 
-const formSchema = z.object({
-  title: z.string().min(2, {
-    message: "Title must be at least 2 characters.",
-  }),
-  description: z.string().min(10, {
-    message: "Description must be at least 10 characters.",
-  }),
-  priority: z.string({
-    required_error: "Please select a task priority.",
-  }),
-});
+const TaskDashboard = () => {
+  const [tasks, setTasks] = useState([
+    { id: 1, title: 'Complete Project Proposal', priority: 'high', status: 'in-progress', progress: 60 },
+    { id: 2, title: 'Review Documentation', priority: 'medium', status: 'todo', progress: 0 },
+    { id: 3, title: 'Update Dependencies', priority: 'low', status: 'completed', progress: 100 }
+  ]);
 
-const TaskForm = () => {
-  const [theme, setTheme] = useState("light");
-
-  useEffect(() => {
-    const currentTheme = document.documentElement.getAttribute("data-theme") || "light";
-    setTheme(currentTheme);
-
-    const observer = new MutationObserver(() => {
-      const updatedTheme = document.documentElement.getAttribute("data-theme");
-      setTheme(updatedTheme);
-    });
-
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
-
-    return () => observer.disconnect();
-  }, []);
-
-  const form = useForm({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      title: "",
-      description: "",
-      priority: "",
-    },
+  const [newTask, setNewTask] = useState({
+    title: '',
+    priority: 'medium'
   });
 
-  const onSubmit = (values) => {
-    console.log(values);
+  const priorityColors = {
+    high: 'bg-red-100 text-red-800',
+    medium: 'bg-yellow-100 text-yellow-800',
+    low: 'bg-green-100 text-green-800'
+  };
+
+  const statusIcons = {
+    'completed': <CheckCircle className="h-5 w-5 text-green-500" />,
+    'in-progress': <Timer className="h-5 w-5 text-yellow-500" />,
+    'todo': <Circle className="h-5 w-5 text-gray-500" />
+  };
+
+  const handleAddTask = () => {
+    if (newTask.title.trim()) {
+      setTasks([...tasks, {
+        id: tasks.length + 1,
+        title: newTask.title,
+        priority: newTask.priority,
+        status: 'todo',
+        progress: 0
+      }]);
+      setNewTask({ title: '', priority: 'medium' });
+    }
   };
 
   return (
-    <div
-      className={`min-h-screen p-4 transition-colors duration-300 ${
-        theme === "light" ? "bg-gray-100 text-black" : "bg-gray-900 text-white"
-      }`}
-    >
-      <Card
-        className={`w-full max-w-md mx-auto mt-8 overflow-hidden transition-shadow duration-300 ${
-          theme === "light" ? "bg-white text-black" : "bg-gray-800 text-white"
-        }`}
-      >
-        <CardHeader className="space-y-1">
-          <CardTitle className="text-center text-2xl font-bold">Create New Task</CardTitle>
-          <CardDescription className="text-center">Add a new task to your list</CardDescription>
-        </CardHeader>
+    <div className="p-6 max-w-4xl mx-auto">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">Task Dashboard</h1>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button className="flex items-center gap-2">
+              <Plus className="h-4 w-4" /> Add Task
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Add New Task</DialogTitle>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+              <div className="grid gap-2">
+                <Label htmlFor="task-title">Task Title</Label>
+                <Input
+                  id="task-title"
+                  value={newTask.title}
+                  onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
+                  placeholder="Enter task title"
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label>Priority</Label>
+                <RadioGroup
+                  value={newTask.priority}
+                  onValueChange={(value) => setNewTask({ ...newTask, priority: value })}
+                  className="flex gap-4"
+                >
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="low" id="low" />
+                    <Label htmlFor="low">Low</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="medium" id="medium" />
+                    <Label htmlFor="medium">Medium</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="high" id="high" />
+                    <Label htmlFor="high">High</Label>
+                  </div>
+                </RadioGroup>
+              </div>
+              <Button onClick={handleAddTask}>Create Task</Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+      </div>
 
-        <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <FormField
-                control={form.control}
-                name="title"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Title</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Enter task title"
-                        {...field}
-                        className={`backdrop-blur-sm ${theme === "light" ? "bg-gray-50" : "bg-gray-700 text-white"}`}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="description"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Description</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder="Enter task description"
-                        {...field}
-                        className={`resize-none backdrop-blur-sm ${theme === "light" ? "bg-gray-50" : "bg-gray-700 text-white"}`}
-                        rows={3}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="priority"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Priority</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger className={`${theme === "light" ? "bg-gray-50" : "bg-gray-700 text-white"}`}>
-                          <SelectValue placeholder="Select task priority" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem  value="low">Low</SelectItem>
-                        <SelectItem  value="medium">Medium</SelectItem>
-                        <SelectItem  value="high">High</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </form>
-          </Form>
-        </CardContent>
-        <CardFooter>
-          <Button
-            type="submit"
-            onClick={form.handleSubmit(onSubmit)}
-            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground transition-colors duration-300"
-          >
-            Create Task
-          </Button>
-        </CardFooter>
-      </Card>
-
-      <div className="mt-20 p-10 flex w-full transition-colors">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium">Total Tasks</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{tasks.length}</div>
+          </CardContent>
+        </Card>
         
-        <div className="card  rounded-box grid h-20 flex-grow place-items-center">
-            <h3>low</h3>
-        </div>
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium">In Progress</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {tasks.filter(task => task.status === 'in-progress').length}
+            </div>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium">Completed</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {tasks.filter(task => task.status === 'completed').length}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
 
-        <div className="divider divider-horizontal"></div>
-        <div className="card  rounded-box grid h-20 flex-grow place-items-center">
-            <h3>medium</h3>
-        </div>
-
-        <div className="divider divider-horizontal"></div>
-        <div className="card  rounded-box grid h-20 flex-grow place-items-center">
-            <h3>high</h3>
-        </div>
-    </div>
-      
+      <div className="space-y-4">
+        {tasks.map(task => (
+          <Card key={task.id} className="w-full">
+            <CardContent className="pt-6">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  {statusIcons[task.status]}
+                  <div>
+                    <h3 className="font-medium">{task.title}</h3>
+                    <span className={`text-xs px-2 py-1 rounded-full ${priorityColors[task.priority]}`}>
+                      {task.priority}
+                    </span>
+                  </div>
+                </div>
+                <div className="w-32">
+                  <div className="h-2 bg-gray-200 rounded-full">
+                    <div 
+                      className="h-2 bg-blue-600 rounded-full"
+                      style={{ width: `${task.progress}%` }}
+                    />
+                  </div>
+                  <span className="text-xs text-gray-500">{task.progress}% complete</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
     </div>
   );
 };
 
-export default TaskForm;
+export default TaskDashboard;
