@@ -31,5 +31,31 @@ const signup = async (req, res) => {
     }
 }
 
+// const login = async (req, res) => {
+//     const {email, password} = req.body;
+
+//     if (!email || !password) {
+//         return res.status(400).json({ message: 'All fields are required' });
+//     }
+
+//     try {
+
+//         const Email = await User.findOne({email});
+//         if (!Email) {
+//             return res.status(400).json({message: "No user found. go to SignUp page."}); 
+//         }
+        
+//         const isMatch = await User.comparePassword(password);
+//         if (!isMatch) {
+//             return res.status(400).json({message: "Pass word is not matching"}); 
+//         }
+
+//         return res.status(201).json({message: "You are LogIn"});
+
+
+//     } catch (error) {
+//         return res.status(500).json({message: "There is error in login"});
+//     }
+// }
 
 export default signup;
