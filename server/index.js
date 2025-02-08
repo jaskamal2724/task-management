@@ -1,12 +1,16 @@
 import connectDB from "./db/connect.js";
-import app from "./app.js";
+import app from "./middleware/app.js";
 import dotenv from "dotenv";
-
-dotenv.config({
-    path:"./.env"
-})
-
+import signup from "./controller/auth.js";
+// dotenv.config({
+//     path:"./.env"
+// });
 const PORT = process.env.PORT || 5000;
+
+
+app.post('/api/signup', signup);
+
+
 
 connectDB()
 .then(()=>{
@@ -16,5 +20,5 @@ connectDB()
 })
 .catch((error)=>{
     console.log(error);
-})
+});
 
