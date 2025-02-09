@@ -2,8 +2,11 @@ import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import InputField from "./InputFiled";
+import { useNavigate } from "react-router-dom";
 
 const SignIn = () => {
+
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({
     email: "",
     password: ""
@@ -33,6 +36,7 @@ const SignIn = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Add form submission logic here
+    navigate("/dashboard")
   };
 
   return (

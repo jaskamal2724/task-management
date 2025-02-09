@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
-import { Plus, CheckCircle, Circle, Timer } from 'lucide-react';
+import { Plus, CheckCircle, Circle, Timer, MessageSquarePlus } from 'lucide-react';
 
 const TaskDashboard = () => {
+
   const [tasks, setTasks] = useState([
     { id: 1, title: 'Complete Project Proposal', priority: 'high', status: 'in-progress', progress: 60 },
     { id: 2, title: 'Review Documentation', priority: 'medium', status: 'todo', progress: 0 },
@@ -18,6 +19,8 @@ const TaskDashboard = () => {
     title: '',
     priority: 'medium'
   });
+
+  
 
   const priorityColors = {
     high: 'bg-red-100 text-red-800',
@@ -44,6 +47,7 @@ const TaskDashboard = () => {
     }
   };
 
+  
   return (
     <div className="p-6 max-w-4xl mx-auto">
       <div className="flex justify-between items-center mb-6">
@@ -133,6 +137,7 @@ const TaskDashboard = () => {
           <Card key={task.id} className="w-full">
             <CardContent className="pt-6">
               <div className="flex items-center justify-between">
+
                 <div className="flex items-center gap-4">
                   {statusIcons[task.status]}
                   <div>
@@ -141,7 +146,15 @@ const TaskDashboard = () => {
                       {task.priority}
                     </span>
                   </div>
+                  
                 </div>
+
+                <div className="">
+                  <button>
+                  <MessageSquarePlus className='text-red-300'/>
+                  </button>
+                </div>
+
                 <div className="w-32">
                   <div className="h-2 bg-gray-200 rounded-full">
                     <div 
@@ -151,7 +164,10 @@ const TaskDashboard = () => {
                   </div>
                   <span className="text-xs text-gray-500">{task.progress}% complete</span>
                 </div>
+
               </div>
+
+              
             </CardContent>
           </Card>
         ))}

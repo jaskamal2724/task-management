@@ -24,9 +24,7 @@ const SignUpForm = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-base-200 transition-colors"> {/* ✅ Dynamic background */}
-
-
+    <div className="flex flex-col items-center justify-center min-h-screen bg-base-200 transition-colors">
       <Card className="w-96 shadow-xl bg-base-100 text-base-content transition-colors"> {/* ✅ Theme-friendly classes */}
         <CardHeader>
           <CardTitle className="text-2xl text-center">Sign Up</CardTitle>
