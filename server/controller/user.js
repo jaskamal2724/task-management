@@ -1,4 +1,4 @@
-import User from "../model/user.js";
+import User from "../model/userModel.js"
 import jwt from "jsonwebtoken";
 
 
@@ -9,7 +9,6 @@ const signup = async (req, res) => {
     if (!username || !email || !password) {                                     //Checking if the inputs are empty
         return res.status(400).json({ message: 'All fields are required' });
     }
-
 
     try {
 
