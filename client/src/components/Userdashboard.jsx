@@ -1,179 +1,292 @@
-import React, { useRef, useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
-import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
-import { Plus, CheckCircle, Circle, Timer, MessageSquarePlus } from 'lucide-react';
+
+import { useState } from "react"
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card"
+import { Button } from "./ui/button"
+import { Input } from "./ui/input"
+import { Label } from "./ui/label"
+import { RadioGroup, RadioGroupItem } from "./ui/radio-group"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog"
+import { Plus, CheckCircle, MessageSquarePlus, Flag, ListTodo, Clock, Rocket, Target, Star, BadgeCheck, AlertTriangle, Flame } from "lucide-react"
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
+
 
 const TaskDashboard = () => {
 
   const [tasks, setTasks] = useState([
-    { id: 1, title: 'Complete Project Proposal', priority: 'high', status: 'in-progress', progress: 60 },
-    { id: 2, title: 'Review Documentation', priority: 'medium', status: 'todo', progress: 0 },
-    { id: 3, title: 'Update Dependencies', priority: 'low', status: 'completed', progress: 100 }
-  ]);
+    {
+      id: 1,
+      title: "Build UI",
+      priority: "high",
+      subtasks: [
+        { id: "sub1", title: "Design homepage", completed: true },
+        { id: "sub2", title: "Create login page", completed: false },
+        { id: "sub3", title: "Add animations", completed: true },
+      ],
+    },
+    {
+      id: 2,
+      title: "Implement Authentication",
+      priority: "medium",
+      subtasks: [
+        { id: "sub4", title: "Set up Firebase Auth", completed: true },
+        { id: "sub5", title: "Implement OAuth login", completed: false },
+        { id: "sub6", title: "Add password reset", completed: false },
+      ],
+    },
+    {
+      id: 3,
+      title: "Develop API Endpoints",
+      priority: "high",
+      subtasks: [
+        { id: "sub7", title: "Create user routes", completed: true },
+        { id: "sub8", title: "Add authentication middleware", completed: true },
+        { id: "sub9", title: "Optimize database queries", completed: false },
+      ],
+    },
+    {
+      id: 4,
+      title: "Testing and Debugging",
+      priority: "low",
+      subtasks: [
+        { id: "sub10", title: "Write unit tests", completed: false },
+        { id: "sub11", title: "Fix console warnings", completed: true },
+        { id: "sub12", title: "Run end-to-end tests", completed: false },
+      ],
+    },
+    {
+      id: 5,
+      title: "Deploy Application",
+      priority: "medium",
+      subtasks: [
+        { id: "sub13", title: "Set up CI/CD pipeline", completed: true },
+        { id: "sub14", title: "Configure server", completed: false },
+        { id: "sub15", title: "Monitor performance", completed: false },
+      ],
+    },
+  ])
+
+  const calculateProgress = (task) => {
+    const totalSubtasks = task.subtasks.length;
+    const completedSubtasks = task.subtasks.filter((sub) => sub.completed).length;
+
+    return totalSubtasks > 0 ? Math.round((completedSubtasks / totalSubtasks) * 100) : 0;
+  };
+
 
   const [newTask, setNewTask] = useState({
-    title: '',
-    priority: 'medium'
-  });
+    title: "",
+    priority: "medium",
+  })
 
-  
+  const [theme, setTheme] = useState("light")
+
+  const toggleTheme = () => {
+
+  }
 
   const priorityColors = {
-    high: 'bg-red-100 text-red-800',
-    medium: 'bg-yellow-100 text-yellow-800',
-    low: 'bg-green-100 text-green-800'
-  };
+    high: "bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100",
+    medium: "bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100",
+    low: "bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100",
+  }
 
   const statusIcons = {
-    'completed': <CheckCircle className="h-5 w-5 text-green-500" />,
-    'in-progress': <Timer className="h-5 w-5 text-yellow-500" />,
-    'todo': <Circle className="h-5 w-5 text-gray-500" />
-  };
+    high: <Rocket className="h-5 w-5 text-blue-500" />,
+    medium: <Target className="h-5 w-5 text-yellow-500" />,
+    low: <Star className="h-5 w-5 text-green-500" />,
+  }
 
   const handleAddTask = () => {
     if (newTask.title.trim()) {
-      setTasks([...tasks, {
-        id: tasks.length + 1,
-        title: newTask.title,
-        priority: newTask.priority,
-        status: 'todo',
-        progress: 0
-      }]);
-      setNewTask({ title: '', priority: 'medium' });
+      setTasks([
+        ...tasks,
+        {
+          id: tasks.length + 1,
+          title: newTask.title,
+          priority: newTask.priority,
+          status: "todo",
+          progress: 0,
+        },
+      ])
+      setNewTask({ title: "", priority: "medium" })
     }
-  };
+  }
 
-  
   return (
-    <div className="p-6 max-w-4xl mx-auto">
+    <div
+      className={`p-6 max-w-4xl mx-auto mt-10 transition-colors duration-300 ${theme === "light" ? "bg-white text-black" : "bg-gray-900 text-white"}`}
+    >
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Task Dashboard</h1>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button className="flex items-center gap-2">
-              <Plus className="h-4 w-4" /> Add Task
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px]">
-            <DialogHeader>
-              <DialogTitle>Add New Task</DialogTitle>
-            </DialogHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid gap-2">
-                <Label htmlFor="task-title">Task Title</Label>
-                <Input
-                  id="task-title"
-                  value={newTask.title}
-                  onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
-                  placeholder="Enter task title"
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label>Priority</Label>
-                <RadioGroup
-                  value={newTask.priority}
-                  onValueChange={(value) => setNewTask({ ...newTask, priority: value })}
-                  className="flex gap-4"
+
+        <div className="flex items-center gap-2">
+          <Flag className="h-6 w-6 text-indigo-500" />
+          <h1 className="text-2xl font-bold">Task Dashboard</h1>
+        </div>
+
+        <div className="flex items-center gap-4">
+
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button className="flex items-center gap-2">
+                <Plus className="h-4 w-4" /> Add Task
+              </Button>
+            </DialogTrigger>
+
+            <DialogContent className="sm:max-w-[500px] p-6 bg-[#F0F8FF] rounded-2xl shadow-lg border border-[#7dd3fc] absolute top-[45%] left-1/2 transform -translate-x-1/2 transition-all duration-300">
+
+              <DialogHeader>
+                <DialogTitle className="text-2xl font-semibold text-[#2563eb] dark:text-[#93c5fd] tracking-wide">
+                  📌 Add New Task
+                </DialogTitle>
+              </DialogHeader>
+
+              <div className="grid gap-6 py-4">
+                {/* Task Title Input */}
+                <div className="grid gap-2">
+                  <Label htmlFor="task-title" className="text-[#334155] dark:text-[#cbd5e1] font-medium text-lg">
+                    Task Title
+                  </Label>
+                  <Input
+                    id="task-title"
+                    value={newTask.title}
+                    onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
+                    placeholder="Enter task title"
+                    className="w-full px-4 py-2 border border-[#7dd3fc] bg-[#f1f5f9] dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg shadow-md focus:ring-2 focus:ring-[#60a5fa] focus:outline-none transition-all duration-300"
+                  />
+                </div>
+
+                {/* Priority Selection */}
+                <div className="grid gap-3">
+
+                  <Label className="text-[#334155] dark:text-[#cbd5e1] font-medium text-lg text-center">Priority</Label>
+
+                  <RadioGroup
+                    value={newTask.priority}
+                    onValueChange={(value) => setNewTask({ ...newTask, priority: value })}
+                    className="flex gap-4"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="low" id="low" />
+                      <BadgeCheck className="text-green-600" size={20} />
+                      <Label htmlFor="low" className="cursor-pointer text-green-600 hover:text-green-500 transition-all">
+                        Low
+                      </Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="medium" id="medium" />
+                      <AlertTriangle className="text-yellow-600" size={20} />
+                      <Label htmlFor="medium" className="cursor-pointer text-yellow-600 hover:text-yellow-500 transition-all">
+                        Medium
+                      </Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="high" id="high" />
+                      <Flame className="text-red-600" size={20} />
+                      <Label htmlFor="high" className="cursor-pointer text-red-600 hover:text-red-500 transition-all">
+                        High
+                      </Label>
+                    </div>
+                  </RadioGroup>
+                </div>
+
+
+                {/* Create Task Button */}
+                <Button
+                  onClick={handleAddTask}
+                  className="w-full bg-[#60a5fa] text-white font-bold py-2 rounded-lg shadow-lg transition-all duration-300 hover:bg-[#3b82f6] hover:shadow-md hover:scale-105"
                 >
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="low" id="low" />
-                    <Label htmlFor="low">Low</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="medium" id="medium" />
-                    <Label htmlFor="medium">Medium</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="high" id="high" />
-                    <Label htmlFor="high">High</Label>
-                  </div>
-                </RadioGroup>
+                  ➕ Create Task
+                </Button>
               </div>
-              <Button onClick={handleAddTask}>Create Task</Button>
-            </div>
-          </DialogContent>
-        </Dialog>
+            </DialogContent>
+
+          </Dialog>
+
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Total Tasks</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              <div className="p-2 rounded-lg bg-purple-100 w-[40px]">
+                <ListTodo className="text-purple-500 h-5 w-5" />
+              </div>
+              Total Tasks
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{tasks.length}</div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">In Progress</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              <div className="p-2 rounded-lg bg-blue-100 w-[40px]">
+                <Clock className="text-blue-500 h-5 w-5" />
+              </div>
+              In Progress
+            </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
-              {tasks.filter(task => task.status === 'in-progress').length}
-            </div>
+            <div className="text-2xl font-bold">{tasks.filter((task) => task.status === "in-progress").length}</div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Completed</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              <div className="p-2 rounded-lg bg-green-100 w-[40px]">
+                <CheckCircle className="text-green-500 h-5 w-5" />
+              </div>
+              Completed
+            </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
-              {tasks.filter(task => task.status === 'completed').length}
-            </div>
+            <div className="text-2xl font-bold">{tasks.filter((task) => task.status === "completed").length}</div>
           </CardContent>
         </Card>
       </div>
 
-      <div className="space-y-4">
-        {tasks.map(task => (
-          <Card key={task.id} className="w-full">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+        {tasks.map((task) => (
+          <Card key={task.id} className="w-full shadow-lg border border-gray-300 hover:shadow-xl transition-all">
             <CardContent className="pt-6">
               <div className="flex items-center justify-between">
-
                 <div className="flex items-center gap-4">
-                  {statusIcons[task.status]}
+                  {statusIcons[task.priority]}
                   <div>
-                    <h3 className="font-medium">{task.title}</h3>
+                    <h3 className="font-medium text-gray-800 dark:text-white">{task.title}</h3>
                     <span className={`text-xs px-2 py-1 rounded-full ${priorityColors[task.priority]}`}>
                       {task.priority}
                     </span>
                   </div>
-                  
                 </div>
 
-                <div className="">
-                  <button>
-                  <MessageSquarePlus className='text-red-300'/>
-                  </button>
+                {/* Circular Progress Bar */}
+                <div className="w-14 h-14">
+                  <CircularProgressbar
+                    value={calculateProgress(task)}
+                    text={`${calculateProgress(task)}%`}
+                    styles={buildStyles({
+                      textSize: "24px",
+                      pathColor: calculateProgress(task) < 50 ? "red" : "green",
+                      textColor: "#333",
+                      trailColor: "#ddd",
+                    })}
+                  />
                 </div>
-
-                <div className="w-32">
-                  <div className="h-2 bg-gray-200 rounded-full">
-                    <div 
-                      className="h-2 bg-blue-600 rounded-full"
-                      style={{ width: `${task.progress}%` }}
-                    />
-                  </div>
-                  <span className="text-xs text-gray-500">{task.progress}% complete</span>
-                </div>
-
               </div>
-
-              
             </CardContent>
           </Card>
         ))}
       </div>
-    </div>
-  );
-};
 
-export default TaskDashboard;
+
+    </div>
+  )
+}
+
+export default TaskDashboard
