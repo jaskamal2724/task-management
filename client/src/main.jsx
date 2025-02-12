@@ -7,6 +7,8 @@ import SignUpForm from './components/SignupForm'
 import SignIn from './components/Signin'
 import Navbar from './components/Navbar'
 import Userdashboard from './components/Userdashboard'
+import Task from './components/Task'
+
 
 const router = createBrowserRouter([
   {
@@ -24,6 +26,10 @@ const router = createBrowserRouter([
   {
     path:"/dashboard",
     element:<Userdashboard/>
+  },
+  {
+    path:"/task/*",
+    element:<Task/>
   }
 ])
 createRoot(document.getElementById('root')).render(

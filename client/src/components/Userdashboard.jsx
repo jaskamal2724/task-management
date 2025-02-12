@@ -9,9 +9,12 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Plus, CheckCircle, MessageSquarePlus, Flag, ListTodo, Clock, Rocket, Target, Star, BadgeCheck, AlertTriangle, Flame } from "lucide-react"
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import { useNavigate } from "react-router-dom"
 
 
 const TaskDashboard = () => {
+
+  const navigate = useNavigate()
 
   const [tasks, setTasks] = useState([
     {
@@ -113,28 +116,32 @@ const TaskDashboard = () => {
     }
   }
 
+  const handlecard = (id) => {
+    navigate(`/task/:${id}`)
+  }
+
   return (
     <div
-      className={`p-6 max-w-4xl mx-auto mt-10 transition-colors duration-300 ${theme === "light" ? "bg-white text-black" : "bg-gray-900 text-white"}`}
+      className={`p-6 max-w-6xl mx-auto mt-10 transition-colors duration-300 ${theme === "light" ? "bg-white text-black" : "bg-gray-900 text-white"}`}
     >
+      
       <div className="flex justify-between items-center mb-6">
-
         <div className="flex items-center gap-2">
           <Flag className="h-6 w-6 text-indigo-500" />
-          <h1 className="text-2xl font-bold">Task Dashboard</h1>
+          <h1 className="text-2xl font-bold text-[#fb6f92]">Task Dashboard</h1>
         </div>
 
+        
         <div className="flex items-center gap-4">
-
           <Dialog>
             <DialogTrigger asChild>
-              <Button className="flex items-center gap-2">
-                <Plus className="h-4 w-4" /> Add Task
+              <Button className="flex items-center gap-2 bg-[#f0f3bd]">
+                <Plus className="h-4 w-4 text-[#05668d]" />
+                <p className="text-[#05668d]">Add Task</p>
               </Button>
             </DialogTrigger>
 
             <DialogContent className="sm:max-w-[500px] p-6 bg-[#F0F8FF] rounded-2xl shadow-lg border border-[#7dd3fc] absolute top-[45%] left-1/2 transform -translate-x-1/2 transition-all duration-300">
-
               <DialogHeader>
                 <DialogTitle className="text-2xl font-semibold text-[#2563eb] dark:text-[#93c5fd] tracking-wide">
                   📌 Add New Task
@@ -142,7 +149,7 @@ const TaskDashboard = () => {
               </DialogHeader>
 
               <div className="grid gap-6 py-4">
-                {/* Task Title Input */}
+               
                 <div className="grid gap-2">
                   <Label htmlFor="task-title" className="text-[#334155] dark:text-[#cbd5e1] font-medium text-lg">
                     Task Title
@@ -156,9 +163,8 @@ const TaskDashboard = () => {
                   />
                 </div>
 
-                {/* Priority Selection */}
+                
                 <div className="grid gap-3">
-
                   <Label className="text-[#334155] dark:text-[#cbd5e1] font-medium text-lg text-center">Priority</Label>
 
                   <RadioGroup
@@ -190,8 +196,7 @@ const TaskDashboard = () => {
                   </RadioGroup>
                 </div>
 
-
-                {/* Create Task Button */}
+                
                 <Button
                   onClick={handleAddTask}
                   className="w-full bg-[#60a5fa] text-white font-bold py-2 rounded-lg shadow-lg transition-all duration-300 hover:bg-[#3b82f6] hover:shadow-md hover:scale-105"
@@ -200,93 +205,113 @@ const TaskDashboard = () => {
                 </Button>
               </div>
             </DialogContent>
-
           </Dialog>
-
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">
-              <div className="p-2 rounded-lg bg-purple-100 w-[40px]">
-                <ListTodo className="text-purple-500 h-5 w-5" />
-              </div>
-              Total Tasks
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{tasks.length}</div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">
-              <div className="p-2 rounded-lg bg-blue-100 w-[40px]">
-                <Clock className="text-blue-500 h-5 w-5" />
-              </div>
-              In Progress
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{tasks.filter((task) => task.status === "in-progress").length}</div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">
-              <div className="p-2 rounded-lg bg-green-100 w-[40px]">
-                <CheckCircle className="text-green-500 h-5 w-5" />
-              </div>
-              Completed
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{tasks.filter((task) => task.status === "completed").length}</div>
-          </CardContent>
-        </Card>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
-        {tasks.map((task) => (
-          <Card key={task.id} className="w-full shadow-lg border border-gray-300 hover:shadow-xl transition-all">
-            <CardContent className="pt-6">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  {statusIcons[task.priority]}
-                  <div>
-                    <h3 className="font-medium text-gray-800 dark:text-white">{task.title}</h3>
-                    <span className={`text-xs px-2 py-1 rounded-full ${priorityColors[task.priority]}`}>
-                      {task.priority}
-                    </span>
-                  </div>
+      
+      <div className="grid grid-cols-3 gap-20">
+        
+        <div className="col-span-1 space-y-6">
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium">
+                <div className="p-2 rounded-lg bg-purple-100 w-[40px]">
+                  <ListTodo className="text-purple-500 h-5 w-5" />
                 </div>
-
-                {/* Circular Progress Bar */}
-                <div className="w-14 h-14">
-                  <CircularProgressbar
-                    value={calculateProgress(task)}
-                    text={`${calculateProgress(task)}%`}
-                    styles={buildStyles({
-                      textSize: "24px",
-                      pathColor: calculateProgress(task) < 50 ? "red" : "green",
-                      textColor: "#333",
-                      trailColor: "#ddd",
-                    })}
-                  />
-                </div>
-              </div>
+                <p className="mt-2">Total Tasks</p>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{tasks.length}</div>
             </CardContent>
           </Card>
-        ))}
+
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium">
+                <div className="p-2 rounded-lg bg-blue-100 w-[40px]">
+                  <Clock className="text-blue-500 h-5 w-5" />
+                </div>
+                <p className="mt-2">In Progress</p>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{tasks.filter((task) => task.status === "in-progress").length}</div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium">
+                <div className="p-2 rounded-lg bg-green-100 w-[40px]">
+                  <CheckCircle className="text-green-500 h-5 w-5" />
+                </div>
+                <p className="mt-2">Completed</p>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{tasks.filter((task) => task.status === "completed").length}</div>
+            </CardContent>
+          </Card>
+        </div>
+
+        
+        <div className="col-span-2 grid grid-cols-1 md:grid-cols-1 md:w-[400px] lg:grid-cols-2 lg:w-[700px] gap-6">
+          {tasks.map((task) => (
+            <button key={task.id} onClick={() => handlecard(task.id)}>
+              <Card className="w-full shadow-lg border border-gray-300 hover:shadow-xl transition-all">
+                <CardContent className="pt-6">
+                  <div className="flex items-center justify-between">
+
+                    <div className="flex gap-4">
+                      {statusIcons[task.priority]}
+                      <div>
+                        <h3 className="font-medium text-gray-800 dark:text-white">{task.title}</h3>
+                        <span className={`text-xs px-2 py-1 rounded-full ${priorityColors[task.priority]}`}>
+                          {task.priority}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="w-14 h-14">
+                      <CircularProgressbar
+                        value={calculateProgress(task)}
+                        text={`${calculateProgress(task)}%`}
+                        styles={buildStyles({
+                          textSize: "24px",
+                          pathColor: calculateProgress(task) < 50 ? "red" : "green",
+                          textColor: "#333",
+                          trailColor: "#ddd",
+                        })}
+                      />
+                    </div>
+
+                  </div>
+                </CardContent>
+              </Card>
+            </button>
+          ))}
+        </div>
+
       </div>
-
-
     </div>
+
   )
 }
 
 export default TaskDashboard
+
+
+
+
+
+
+
+
+
+
+
+
+
+
