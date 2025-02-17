@@ -41,7 +41,7 @@ const SignIn = () => {
 
   return (
     <div
-      className={`flex items-center justify-center min-h-screen transition-colors duration-300 ${
+      className={`flex items-center justify-center pt-36 transition-colors duration-300 ${
         theme === "light" ? "bg-gray-100 text-black" : "bg-gray-900 text-white"
       }`}
     >

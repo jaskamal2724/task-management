@@ -1,5 +1,5 @@
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card"
 import { Button } from "./ui/button"
 import { Input } from "./ui/input"
@@ -13,6 +13,23 @@ import { useNavigate } from "react-router-dom"
 
 
 const TaskDashboard = () => {
+
+  const [theme, setTheme] = useState("light");
+  
+    // // Sync theme with the current document theme
+    // useEffect(() => {
+    //   const currentTheme = document.documentElement.getAttribute("data-theme") || "light";
+    //   setTheme(currentTheme);
+  
+    //   const observer = new MutationObserver(() => {
+    //     const updatedTheme = document.documentElement.getAttribute("data-theme");
+    //     setTheme(updatedTheme);
+    //   });
+  
+    //   observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  
+    //   return () => observer.disconnect();
+    // }, []);
 
   const navigate = useNavigate()
 
@@ -82,11 +99,8 @@ const TaskDashboard = () => {
     priority: "medium",
   })
 
-  const [theme, setTheme] = useState("light")
 
-  const toggleTheme = () => {
-
-  }
+  
 
   const priorityColors = {
     high: "bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100",
@@ -121,8 +135,9 @@ const TaskDashboard = () => {
   }
 
   return (
+    
     <div
-      className={`p-6 max-w-6xl mx-auto mt-10 transition-colors duration-300 ${theme === "light" ? "bg-white text-black" : "bg-gray-900 text-white"}`}
+      className={`p-6 max-w-6xl mx-auto mt-10 min-h-[825px] transition-colors duration-300 `}
     >
       
       <div className="flex justify-between items-center mb-6">
@@ -208,7 +223,6 @@ const TaskDashboard = () => {
           </Dialog>
         </div>
       </div>
-
       
       <div className="grid grid-cols-3 gap-20">
         
@@ -280,7 +294,7 @@ const TaskDashboard = () => {
                         text={`${calculateProgress(task)}%`}
                         styles={buildStyles({
                           textSize: "24px",
-                          pathColor: calculateProgress(task) < 50 ? "red" : "green",
+                          pathColor: calculateProgress(task) < 50 ? "#e32626" : "#68ac82",
                           textColor: "#333",
                           trailColor: "#ddd",
                         })}
@@ -295,22 +309,13 @@ const TaskDashboard = () => {
         </div>
 
       </div>
+       
     </div>
 
   )
 }
 
 export default TaskDashboard
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -4,8 +4,10 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import { Rocket, Target, Star } from "lucide-react";
 
 const TaskDetails = () => {
+
   const [task, setTask] = useState({
     id: 1,
     title: "Implement Authentication",
@@ -38,10 +40,17 @@ const TaskDetails = () => {
     low: "bg-green-100 text-green-800",
   };
 
+  const statusIcons = {
+    high: <Rocket className="h-5 w-5 text-blue-500" />,
+    medium: <Target className="h-5 w-5 text-yellow-500" />,
+    low: <Star className="h-5 w-5 text-green-500" />,
+  }
+
   return (
     <div className="p-6 max-w-2xl mx-auto mt-10 bg-white text-black rounded-lg shadow-lg">
       <div className="flex items-center justify-between">
-        <div>
+        <div cl>
+          <span>{statusIcons[task.priority]}</span>
           <h2 className="text-2xl font-bold text-gray-800">{task.title}</h2>
           <span className={`text-xs px-2 py-1 mt-2 rounded-full ${priorityColors[task.priority]}`}>
             {task.priority}
@@ -54,7 +63,7 @@ const TaskDetails = () => {
             text={`${calculateProgress()}%`}
             styles={buildStyles({
               textSize: "24px",
-              pathColor: calculateProgress() < 50 ? "red" : "green",
+              pathColor: calculateProgress() < 50 ? "#AC99CC" : "#F0A59A",
               textColor: "#333",
               trailColor: "#ddd",
             })}
@@ -63,7 +72,7 @@ const TaskDetails = () => {
       </div>
 
       <div className="mt-6">
-        <h3 className="text-xl font-semibold text-gray-700">Subtasks</h3>
+        <h3 className="text-xl font-semibold text-gray-700 text-center">Subtasks</h3>
         <div className="mt-4 space-y-4">
           {task.subtasks.map((subtask) => (
             <div key={subtask.id} className="flex justify-between items-center">
@@ -81,12 +90,12 @@ const TaskDetails = () => {
         </div>
       </div>
 
-      <div className="mt-6">
+      <div className="mt-6 flex flex-col items-center">
         <Input
           placeholder="Add a subtask"
           className="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        <Button className="mt-4 w-full bg-blue-500 text-white font-semibold rounded-lg py-2 hover:bg-blue-600">
+        <Button className="mt-4 w-[200px] bg-blue-500 text-white font-semibold rounded-lg py-2 hover:bg-blue-600">
           Add Subtask
         </Button>
       </div>
