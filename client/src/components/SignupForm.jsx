@@ -8,7 +8,6 @@ import { ToastContainer, toast } from "react-toastify";
 
 const SignUpForm = () => {
   
-
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -51,6 +50,10 @@ const SignUpForm = () => {
       console.log("sign up error ", error)
     }
 
+  };
+
+  const handleLoginRedirect = () => {
+    navigate("/signin"); // Navigate to the signin page
   };
 
   return (
@@ -100,7 +103,10 @@ const SignUpForm = () => {
                 onChange={handleChange}
                 name="password"
               />
+              <div className="flex flex-col gap-4 items-center">
               <Button type="submit" className="w-full">Create Account</Button>
+              <button  className=" text-blue-700 bg-transparent hover:font-bold" onClick={handleLoginRedirect}>LOGIN</button>
+              </div>
             </form>
           </CardContent>
         </Card>

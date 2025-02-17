@@ -39,9 +39,13 @@ const SignIn = () => {
     navigate("/dashboard")
   };
 
+  const handleLoginRedirect = () => {
+    navigate("/signup");
+  };
+
   return (
     <div
-      className={`flex items-center justify-center pt-36 transition-colors duration-300 ${
+      className={`flex items-center h-[839px] justify-center  transition-colors duration-300 ${
         theme === "light" ? "bg-gray-100 text-black" : "bg-gray-900 text-white"
       }`}
     >
@@ -72,9 +76,10 @@ const SignIn = () => {
               onChange={handleChange}
               name="password"
             />
-            <Button type="submit" className="w-full">
-              Next
-            </Button>
+            <div className="flex flex-col gap-4 items-center">
+              <Button type="submit" className="w-72">NEXT</Button>
+              <button  className=" text-blue-700 bg-transparent hover:font-bold" onClick={handleLoginRedirect}>Don't have account . "Create" </button>
+              </div>
           </form>
         </CardContent>
       </Card>
