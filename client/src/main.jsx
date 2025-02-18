@@ -13,7 +13,7 @@ import Task from './components/Task'
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <SignUpForm />
+    element: <App/>
   },
   {
     path: "/signin",

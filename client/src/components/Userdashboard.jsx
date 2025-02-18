@@ -6,7 +6,7 @@ import { Input } from "./ui/input"
 import { Label } from "./ui/label"
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog"
-import { Plus, CheckCircle, MessageSquarePlus, Flag, ListTodo, Clock, Rocket, Target, Star, BadgeCheck, AlertTriangle, Flame } from "lucide-react"
+import { Plus, CheckCircle, MessageSquarePlus, Flag, ListTodo, Clock, Rocket, Target, Star, BadgeCheck, AlertTriangle, Flame, LogOut } from "lucide-react"
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { useNavigate } from "react-router-dom"
@@ -15,21 +15,21 @@ import { useNavigate } from "react-router-dom"
 const TaskDashboard = () => {
 
   const [theme, setTheme] = useState("light");
-  
-    // // Sync theme with the current document theme
-    // useEffect(() => {
-    //   const currentTheme = document.documentElement.getAttribute("data-theme") || "light";
-    //   setTheme(currentTheme);
-  
-    //   const observer = new MutationObserver(() => {
-    //     const updatedTheme = document.documentElement.getAttribute("data-theme");
-    //     setTheme(updatedTheme);
-    //   });
-  
-    //   observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
-  
-    //   return () => observer.disconnect();
-    // }, []);
+
+  // // Sync theme with the current document theme
+  // useEffect(() => {
+  //   const currentTheme = document.documentElement.getAttribute("data-theme") || "light";
+  //   setTheme(currentTheme);
+
+  //   const observer = new MutationObserver(() => {
+  //     const updatedTheme = document.documentElement.getAttribute("data-theme");
+  //     setTheme(updatedTheme);
+  //   });
+
+  //   observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+
+  //   return () => observer.disconnect();
+  // }, []);
 
   const navigate = useNavigate()
 
@@ -100,8 +100,6 @@ const TaskDashboard = () => {
   })
 
 
-  
-
   const priorityColors = {
     high: "bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100",
     medium: "bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100",
@@ -134,23 +132,33 @@ const TaskDashboard = () => {
     navigate(`/task/:${id}`)
   }
 
+  const handlelogout=()=>{
+    sessionStorage.removeItem("token")
+    navigate("/signin")
+  }
+
   return (
-    
+
     <div
       className={`p-6 max-w-6xl mx-auto mt-10 min-h-[825px] transition-colors duration-300 `}
     >
-      
+
       <div className="flex justify-between items-center mb-6">
         <div className="flex items-center gap-2">
           <Flag className="h-6 w-6 text-indigo-500" />
           <h1 className="text-2xl font-bold text-[#fb6f92]">Task Dashboard</h1>
+          <Button onClick={handlelogout} className="mx-72 bg-[#ffc7c9] flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-[#ff9a9e] hover:shadow-lg">
+            <LogOut className="text-[#55559b] transition-all duration-300 group-hover:text-white" />
+            <p className="text-[#55559b] transition-all duration-300 group-hover:text-white">Logout</p>
+          </Button>
+
         </div>
 
-        
+
         <div className="flex items-center gap-4">
           <Dialog>
             <DialogTrigger asChild>
-              <Button className="flex items-center gap-2 bg-[#f0f3bd]">
+              <Button className="flex items-center gap-2 bg-[#f0f3bd] hover:bg-[#f1f77f]">
                 <Plus className="h-4 w-4 text-[#05668d]" />
                 <p className="text-[#05668d]">Add Task</p>
               </Button>
@@ -164,7 +172,7 @@ const TaskDashboard = () => {
               </DialogHeader>
 
               <div className="grid gap-6 py-4">
-               
+
                 <div className="grid gap-2">
                   <Label htmlFor="task-title" className="text-[#334155] dark:text-[#cbd5e1] font-medium text-lg">
                     Task Title
@@ -178,7 +186,7 @@ const TaskDashboard = () => {
                   />
                 </div>
 
-                
+
                 <div className="grid gap-3">
                   <Label className="text-[#334155] dark:text-[#cbd5e1] font-medium text-lg text-center">Priority</Label>
 
@@ -211,7 +219,7 @@ const TaskDashboard = () => {
                   </RadioGroup>
                 </div>
 
-                
+
                 <Button
                   onClick={handleAddTask}
                   className="w-full bg-[#60a5fa] text-white font-bold py-2 rounded-lg shadow-lg transition-all duration-300 hover:bg-[#3b82f6] hover:shadow-md hover:scale-105"
@@ -223,9 +231,9 @@ const TaskDashboard = () => {
           </Dialog>
         </div>
       </div>
-      
+
       <div className="grid grid-cols-3 gap-20">
-        
+
         <div className="col-span-1 space-y-6">
           <Card>
             <CardHeader className="pb-2">
@@ -270,7 +278,7 @@ const TaskDashboard = () => {
           </Card>
         </div>
 
-        
+
         <div className="col-span-2 grid grid-cols-1 md:grid-cols-1 md:w-[400px] lg:grid-cols-2 lg:w-[700px] gap-6">
           {tasks.map((task) => (
             <button key={task.id} onClick={() => handlecard(task.id)}>
@@ -309,7 +317,7 @@ const TaskDashboard = () => {
         </div>
 
       </div>
-       
+
     </div>
 
   )

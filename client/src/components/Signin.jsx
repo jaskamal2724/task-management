@@ -3,6 +3,7 @@ import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import InputField from "./InputFiled";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const SignIn = () => {
 
@@ -33,10 +34,19 @@ const SignIn = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add form submission logic here
-    navigate("/dashboard")
+
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/login`,formData)
+      console.log(response.data.token)
+      sessionStorage.setItem("token",response.data.token)
+      navigate("/dashboard")
+    } 
+    catch (error) {
+      console.log("login error " , error)
+    }
+    
   };
 
   const handleLoginRedirect = () => {

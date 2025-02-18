@@ -1,6 +1,10 @@
 import User from "../model/userModel.js"
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv"
 
+dotenv.config({
+  path:"./.env"
+})
 
 //SignUp Function
 const signup = async (req, res) => {
@@ -51,11 +55,13 @@ const login = async (req, res) => {
             return res.status(400).json({message: "Invalid credentials"}); 
         }
 
-        res.status(201).json({message: "You are LogIn"});       //login
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {});
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+        res.status(201).json({message: "You are LogIn",token});       //login
+        console.log("you are logged in")
+        return 
 
-
-    } catch (error) {                                           // for any other error
+    } 
+    catch (error) {                                           // for any other error
         console.log(error);
         return res.status(500).json({message: "There is error in login"});
     }
