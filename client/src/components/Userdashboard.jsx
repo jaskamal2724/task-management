@@ -72,7 +72,7 @@ const TaskDashboard = () => {
     try {
       const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/gettask`)
       if (response.status == 200) {
-        console.log(response.data)
+        // console.log(response.data)
         setTasks(response.data)
       }
       else {
@@ -159,7 +159,7 @@ const TaskDashboard = () => {
   }
 
   const handlecard = (id) => {
-    navigate(`/task/:${id}`)
+    navigate(`/task/${id}`)
   }
 
   const handlelogout = () => {
@@ -311,7 +311,7 @@ const TaskDashboard = () => {
 
         <div className="col-span-2 grid grid-cols-1 md:grid-cols-1 md:w-[400px] lg:grid-cols-2 lg:w-[700px] gap-6">
           {tasks?.map((task) => (
-            <button key={task._id} onClick={() => handlecard(task.id)}>
+            <button key={task._id} onClick={() => handlecard(task._id)}>
               <Card className="w-full shadow-lg border border-gray-300 hover:shadow-xl transition-all">
                 <CardContent className="pt-6">
                   <div className="flex items-center justify-between">

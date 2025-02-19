@@ -7,12 +7,16 @@ const SubtaskSchema = new mongoose.Schema({
 
 const TaskSchema = new mongoose.Schema(
   {
-    id:{type:String, required:true},
+    id: { type: String, required: true },
     title: { type: String, required: true },
     priority: { type: String, enum: ["low", "medium", "high"], default: "medium" },
     subtasks: [SubtaskSchema],
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  }
 );
 
 // Virtual field to calculate progress percentage

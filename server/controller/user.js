@@ -164,4 +164,63 @@ const getTask=async (req, res) => {
   }
 }
 
-export { signup, login, getProfile, updateProfile, addtask, getTask};
+const addSubtask=async (req, res) => {
+  try {
+    const {id, title}=req.body
+    console.log(title)
+
+    const data={
+      title:title,
+      status:"Not Done"
+    }
+    const task = await Task.findByIdAndUpdate({_id:id},{$push:{subtasks:data}})
+    if(task){
+      res.status(200).json({msg:"subtask added successfulyl",task})
+    }
+    else{
+      res.status(400).json({msg:"subtask not added "})
+    }
+  } 
+  catch (error) {
+    console.log("error updating subtask ", error)
+  }
+}
+
+const updateSubtaskStatus = async (req, res) => {
+  try {
+    const { taskId, subtaskId } = req.body;
+
+    // Find the task and get the current status of the subtask
+    const task = await Task.findOne({ _id: taskId, "subtasks._id": subtaskId });
+
+    if (!task) {
+      return res.status(404).json({ msg: "Task or subtask not found" });
+    }
+
+    // Find the subtask within the task
+    const subtask = task.subtasks.find((sub) => sub._id.toString() === subtaskId);
+
+    if (!subtask) {
+      return res.status(404).json({ msg: "Subtask not found" });
+    }
+
+    // Toggle the status dynamically
+    const newStatus = subtask.status === "Done" ? "Not Done" : "Done";
+
+    // Update the subtask status
+    const updatedTask = await Task.findOneAndUpdate(
+      { _id: taskId, "subtasks._id": subtaskId },
+      { $set: { "subtasks.$.status": newStatus } },
+      { new: true }
+    );
+
+    res.status(200).json({ msg: "Subtask status updated", updatedTask });
+  } catch (error) {
+    console.error("Error updating subtask:", error);
+    res.status(500).json({ msg: "Server error" });
+  }
+};
+
+
+
+export { signup, login, getProfile, updateProfile, addtask, getTask ,addSubtask, updateSubtaskStatus};
