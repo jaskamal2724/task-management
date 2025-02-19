@@ -19,7 +19,7 @@ const TaskDetails = () => {
 
       if (response.status == 200) {
         const tsk = response.data?.filter((item) => item._id == id)
-        console.log(tsk[0])
+        // console.log(tsk[0])
         setTask(tsk[0])
       }
       else {
@@ -128,7 +128,7 @@ const TaskDetails = () => {
               <div className="text-sm text-gray-600">{subtask.title}</div>
               <Button
                 onClick={() => toggleSubtaskCompletion(subtask?._id)}
-                className={`px-4 py-2 rounded-lg text-xs font-semibold ${subtask.status ? "bg-green-500 text-white" : "bg-red-500 text-white"
+                className={`px-4 py-2 rounded-lg text-xs font-semibold ${subtask.status=="Done" ? "bg-green-500 text-white" : "bg-red-500 text-white"
                   }`}
               >
                 {subtask.status}
