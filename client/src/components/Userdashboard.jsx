@@ -109,8 +109,8 @@ const TaskDashboard = () => {
 
 
   const calculateProgress = (task) => {
-    const totalSubtasks = task.subtasks.length;
-    const completedSubtasks = task.subtasks.filter((sub) => sub.completed).length;
+    const totalSubtasks = task.subtasks?.length;
+    const completedSubtasks = task.subtasks?.filter((sub) => sub.status=="Done").length;
 
     return totalSubtasks > 0 ? Math.round((completedSubtasks / totalSubtasks) * 100) : 0;
   };
