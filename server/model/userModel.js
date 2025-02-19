@@ -17,6 +17,8 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    tasks:[],
+    team:[]
   },
   {
     timestamps: true,

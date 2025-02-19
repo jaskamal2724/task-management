@@ -6,13 +6,87 @@ import { Input } from "./ui/input"
 import { Label } from "./ui/label"
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog"
-import { Plus, CheckCircle, MessageSquarePlus, Flag, ListTodo, Clock, Rocket, Target, Star, BadgeCheck, AlertTriangle, Flame, LogOut } from "lucide-react"
+import { Plus, CheckCircle, Flag, ListTodo, Clock, Rocket, Target, Star, BadgeCheck, AlertTriangle, Flame, LogOut } from "lucide-react"
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { useNavigate } from "react-router-dom"
+import axios from "axios"
 
 
 const TaskDashboard = () => {
+
+  const [tasks, setTasks] = useState([
+    // {
+    //   id: 1,
+    //   title: "Build UI",
+    //   priority: "high",
+    //   subtasks: [
+    //     { id: "sub1", title: "Design homepage", completed: true },
+    //     { id: "sub2", title: "Create login page", completed: false },
+    //     { id: "sub3", title: "Add animations", completed: true },
+    //   ],
+    // },
+    // {
+    //   id: 2,
+    //   title: "Implement Authentication",
+    //   priority: "medium",
+    //   subtasks: [
+    //     { id: "sub4", title: "Set up Firebase Auth", completed: true },
+    //     { id: "sub5", title: "Implement OAuth login", completed: false },
+    //     { id: "sub6", title: "Add password reset", completed: false },
+    //   ],
+    // },
+    // {
+    //   id: 3,
+    //   title: "Develop API Endpoints",
+    //   priority: "high",
+    //   subtasks: [
+    //     { id: "sub7", title: "Create user routes", completed: true },
+    //     { id: "sub8", title: "Add authentication middleware", completed: true },
+    //     { id: "sub9", title: "Optimize database queries", completed: false },
+    //   ],
+    // },
+    // {
+    //   id: 4,
+    //   title: "Testing and Debugging",
+    //   priority: "low",
+    //   subtasks: [
+    //     { id: "sub10", title: "Write unit tests", completed: false },
+    //     { id: "sub11", title: "Fix console warnings", completed: true },
+    //     { id: "sub12", title: "Run end-to-end tests", completed: false },
+    //   ],
+    // },
+    // {
+    //   id: 5,
+    //   title: "Deploy Application",
+    //   priority: "medium",
+    //   subtasks: [
+    //     { id: "sub13", title: "Set up CI/CD pipeline", completed: true },
+    //     { id: "sub14", title: "Configure server", completed: false },
+    //     { id: "sub15", title: "Monitor performance", completed: false },
+    //   ],
+    // },
+  ])
+
+  const gettask = async () => {
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/gettask`)
+      if (response.status == 200) {
+        console.log(response.data)
+        setTasks(response.data)
+      }
+      else {
+        setTasks([])
+      }
+    }
+    catch (error) {
+      console.log("error fetching tasks ", error)
+    }
+  }
+
+  useEffect(() => {
+    gettask()
+  }, [])
 
   const [theme, setTheme] = useState("light");
 
@@ -33,58 +107,6 @@ const TaskDashboard = () => {
 
   const navigate = useNavigate()
 
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      title: "Build UI",
-      priority: "high",
-      subtasks: [
-        { id: "sub1", title: "Design homepage", completed: true },
-        { id: "sub2", title: "Create login page", completed: false },
-        { id: "sub3", title: "Add animations", completed: true },
-      ],
-    },
-    {
-      id: 2,
-      title: "Implement Authentication",
-      priority: "medium",
-      subtasks: [
-        { id: "sub4", title: "Set up Firebase Auth", completed: true },
-        { id: "sub5", title: "Implement OAuth login", completed: false },
-        { id: "sub6", title: "Add password reset", completed: false },
-      ],
-    },
-    {
-      id: 3,
-      title: "Develop API Endpoints",
-      priority: "high",
-      subtasks: [
-        { id: "sub7", title: "Create user routes", completed: true },
-        { id: "sub8", title: "Add authentication middleware", completed: true },
-        { id: "sub9", title: "Optimize database queries", completed: false },
-      ],
-    },
-    {
-      id: 4,
-      title: "Testing and Debugging",
-      priority: "low",
-      subtasks: [
-        { id: "sub10", title: "Write unit tests", completed: false },
-        { id: "sub11", title: "Fix console warnings", completed: true },
-        { id: "sub12", title: "Run end-to-end tests", completed: false },
-      ],
-    },
-    {
-      id: 5,
-      title: "Deploy Application",
-      priority: "medium",
-      subtasks: [
-        { id: "sub13", title: "Set up CI/CD pipeline", completed: true },
-        { id: "sub14", title: "Configure server", completed: false },
-        { id: "sub15", title: "Monitor performance", completed: false },
-      ],
-    },
-  ])
 
   const calculateProgress = (task) => {
     const totalSubtasks = task.subtasks.length;
@@ -112,19 +134,27 @@ const TaskDashboard = () => {
     low: <Star className="h-5 w-5 text-green-500" />,
   }
 
-  const handleAddTask = () => {
-    if (newTask.title.trim()) {
-      setTasks([
-        ...tasks,
-        {
-          id: tasks.length + 1,
-          title: newTask.title,
-          priority: newTask.priority,
-          status: "todo",
-          progress: 0,
-        },
-      ])
-      setNewTask({ title: "", priority: "medium" })
+  const handleAddTask = async () => {
+
+    try {
+
+      const token = sessionStorage.getItem("token")
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/addtask`, {
+        title: newTask.title,
+        priority: newTask.priority,
+        subtasks: [],
+      }, { headers: { "Authorization": `Bearer ${token}` } })
+
+      if (response.status == 200) {
+        console.log("task added")
+      }
+      else {
+        console.log("task not added")
+      }
+
+      return
+    } catch (error) {
+      console.log("error in adding task", error)
     }
   }
 
@@ -132,7 +162,7 @@ const TaskDashboard = () => {
     navigate(`/task/:${id}`)
   }
 
-  const handlelogout=()=>{
+  const handlelogout = () => {
     sessionStorage.removeItem("token")
     navigate("/signin")
   }
@@ -245,7 +275,7 @@ const TaskDashboard = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{tasks.length}</div>
+              <div className="text-2xl font-bold">{tasks?.length}</div>
             </CardContent>
           </Card>
 
@@ -259,7 +289,7 @@ const TaskDashboard = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{tasks.filter((task) => task.status === "in-progress").length}</div>
+              <div className="text-2xl font-bold">{tasks?.filter((task) => task.status === "in-progress").length}</div>
             </CardContent>
           </Card>
 
@@ -273,15 +303,15 @@ const TaskDashboard = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{tasks.filter((task) => task.status === "completed").length}</div>
+              <div className="text-2xl font-bold">{tasks?.filter((task) => task.status === "completed").length}</div>
             </CardContent>
           </Card>
         </div>
 
 
         <div className="col-span-2 grid grid-cols-1 md:grid-cols-1 md:w-[400px] lg:grid-cols-2 lg:w-[700px] gap-6">
-          {tasks.map((task) => (
-            <button key={task.id} onClick={() => handlecard(task.id)}>
+          {tasks?.map((task) => (
+            <button key={task._id} onClick={() => handlecard(task.id)}>
               <Card className="w-full shadow-lg border border-gray-300 hover:shadow-xl transition-all">
                 <CardContent className="pt-6">
                   <div className="flex items-center justify-between">

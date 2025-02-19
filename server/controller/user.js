@@ -1,6 +1,7 @@
 import User from "../model/userModel.js"
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv"
+import Task from "../model/TaskModel.js";
 
 dotenv.config({
   path:"./.env"
@@ -122,4 +123,45 @@ const updateProfile = async (req, res) => {
     }
 };
 
-export { signup, login, getProfile, updateProfile};
+const addtask =async(req, res)=>{
+  try {
+    const {title,priority,subtasks}= req.body
+
+    if(!title || !priority || !subtasks){
+      res.status(400).json({msg:"all fields are required"})
+    }
+    const task = await Task.create({
+      id:req.user.id,
+      title,
+      priority,
+      subtasks,
+    })
+
+    if(task){
+      console.log("task added")
+    }
+    return res.status(200).json({msg:"task added"})
+
+  } catch (error) {
+    console.log("errror in addign task ",error)
+  }
+}
+
+const getTask=async (req, res) => {
+  try {
+    const response = await Task.find({})
+
+    if(response){
+      res.status(200).json(response)
+    }
+    else{
+      res.status(400).json({msg:"no task found"})
+    }
+    return
+  } 
+  catch (error) {
+    console.log("error in fetching task ",error)
+  }
+}
+
+export { signup, login, getProfile, updateProfile, addtask, getTask};
