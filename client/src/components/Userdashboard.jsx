@@ -289,7 +289,7 @@ const TaskDashboard = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{tasks?.filter((task) => task.status === "in-progress").length}</div>
+              <div className="text-2xl font-bold">{tasks?.length}</div>
             </CardContent>
           </Card>
 
