@@ -9,11 +9,11 @@ dotenv.config({
 
 //SignUp Function
 const signup = async (req, res) => {
-  const { username, email, password } = req.body;                               //taking inputs from body
-
-  if (!username || !email || !password) {                                     //Checking if the inputs are empty
-    return res.status(400).json({ message: 'All fields are required' });
-  }
+    const {username, email, password, role} = req.body;                               //taking inputs from body
+    
+    if (!username || !email || !password) {                                     //Checking if the inputs are empty
+        return res.status(400).json({ message: 'All fields are required' });
+    }
 
   try {
 
@@ -22,13 +22,13 @@ const signup = async (req, res) => {
       return res.status(400).json({ message: "Username already exist" });
     }
 
-    const existingEmail = await User.findOne({ email });                      //cheking if email already there
-    if (existingEmail) {
-      return res.status(400).json({ message: "Email already exist" });
-    }
-    const user = new User({ username, email, password });                       //creating new record
-    await user.save();
-    return res.status(201).json({ message: "You are SignUp" });               //signup
+        const existingEmail = await User.findOne({email});                      //cheking if email already there
+        if (existingEmail) {
+            return res.status(400).json({message: "Email already exist"}); 
+        } 
+        const user = new User({username,email,password,role});                       //creating new record
+        await user.save();
+        return res.status(201).json({message: "You are SignUp"});               //signup
 
 
   } catch (error) {                                                           //for other errors
