@@ -3,12 +3,13 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import { Rocket, Target, Star } from "lucide-react";
+import { Rocket, Target, Star, Trash2 } from "lucide-react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 
 const TaskDetails = () => {
+  const navigate = useNavigate()
   const { id } = useParams()
   const [task, setTask] = useState({});
   const [newSubtask, setnewsubtask]=useState({title:""})
@@ -65,8 +66,6 @@ const TaskDetails = () => {
     }
   };
   
-  
-
   const priorityColors = {
     high: "bg-red-100 text-red-800",
     medium: "bg-yellow-100 text-yellow-800",
@@ -95,6 +94,25 @@ const TaskDetails = () => {
     }
   }
 
+  const handleDelete=async ()=>{
+    try {
+      console.log(id)
+      const response = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/delete`,{data:{id:id}})
+
+      if(response.status==200){
+        navigate("/dashboard")
+        console.log("task deleted")
+      }
+      else{
+        console.log("task not deleted")
+      }
+    } 
+    catch (error) {
+      console.log("error in deleting task", error)
+    }
+  }
+  
+
   return (
     <div className="p-6 max-w-2xl mx-auto mt-10 bg-white text-black rounded-lg shadow-lg">
       <div className="flex items-center justify-between">
@@ -105,6 +123,10 @@ const TaskDetails = () => {
             {task.priority}
           </span>
         </div>
+
+        <button>
+        <Trash2 onClick={handleDelete} className="text-[#B5828C]"/>
+        </button>
 
         <div className="w-20 h-20">
           <CircularProgressbar

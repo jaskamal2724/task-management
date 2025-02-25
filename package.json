@@ -2,6 +2,7 @@
   "name": "task-management",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "concurrently \"npm run server\" \"npm run client\" ",
     "server": "cd server && npm run start",

@@ -6,7 +6,7 @@ import { Input } from "./ui/input"
 import { Label } from "./ui/label"
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog"
-import { Plus, CheckCircle, Flag, ListTodo, Clock, Rocket, Target, Star, BadgeCheck, AlertTriangle, Flame, LogOut } from "lucide-react"
+import { Plus, CheckCircle, Flag, ListTodo, Clock, Rocket, Target, Star, BadgeCheck, AlertTriangle, Flame, LogOut, Activity } from "lucide-react"
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { useNavigate } from "react-router-dom"
@@ -325,7 +325,7 @@ const TaskDashboard = () => {
                         </span>
                       </div>
                     </div>
-
+                    <Activity className="text-[#FFAB5B]"/>
                     <div className="w-14 h-14">
                       <CircularProgressbar
                         value={calculateProgress(task)}
@@ -338,8 +338,9 @@ const TaskDashboard = () => {
                         })}
                       />
                     </div>
-
+                    
                   </div>
+                  
                 </CardContent>
               </Card>
             </button>
