@@ -8,6 +8,7 @@ import SignIn from './components/Signin'
 import Navbar from './components/Navbar'
 import Userdashboard from './components/Userdashboard'
 import Task from './components/Task'
+import Teampage from './components/Teampage'
 
 
 const router = createBrowserRouter([
@@ -30,8 +31,13 @@ const router = createBrowserRouter([
   {
     path: "/task/:id",
     element: <Task />
+  },
+  {
+    path:"/team",
+    element:<Teampage/>
   }
 ])
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Navbar />

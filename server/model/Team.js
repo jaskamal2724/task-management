@@ -4,12 +4,7 @@ const MemberSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   role: { type: String, enum: ["Admin", "Member"], default: "Member" },
-  tasks: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Task", // Reference to Task model
-    },
-  ],
+  task: {type:String, required:true}
 });
 
 const TeamSchema = new mongoose.Schema(

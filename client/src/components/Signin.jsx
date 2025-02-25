@@ -39,14 +39,17 @@ const SignIn = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/login`, formData)
-      console.log("token", response.data.token)
-      sessionStorage.setItem("token",response.data.token)
-      setLoading(true)
-      setTimeout(() => {
-        setLoading(false)
-        navigate("/dashboard")
-      }, 3000)
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/login`, formData, { withCredentials: true })
+      // console.log("token", response.data.token)
+      // sessionStorage.setItem("token",response.data.token)
+      if (response) {
+        setLoading(true)
+        setTimeout(() => {
+          setLoading(false)
+          console.log("logged in")
+          navigate("/dashboard")
+        }, 3000)
+      }
     }
     catch (error) {
       console.log("login error ", error)
