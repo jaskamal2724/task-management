@@ -13,6 +13,7 @@ import axios from "axios"
 import { ToastContainer, toast } from "react-toastify"
 
 const TaskDashboard = () => {
+  
   const navigate = useNavigate()
   const [tasks, setTasks] = useState([])
 
@@ -34,7 +35,8 @@ const TaskDashboard = () => {
 
   useEffect(() => {
     gettask()
-  }, [])
+  
+  }, [tasks])
 
   const calculateProgress = (task) => {
     const totalSubtasks = task.subtasks?.length;
@@ -135,7 +137,7 @@ const TaskDashboard = () => {
       />
 
       <div className={`p-6 max-w-6xl mx-auto mt-10 min-h-[825px] transition-colors duration-300 `}>
-        
+
         {/* heading , logout, team , add team */}
         <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
           {/* Left Section */}

@@ -9,7 +9,7 @@ import Navbar from './components/Navbar'
 import Userdashboard from './components/Userdashboard'
 import Task from './components/Task'
 import Teampage from './components/Teampage'
-
+import Adminpage from './components/Adminpage'
 
 const router = createBrowserRouter([
   {
@@ -29,6 +29,10 @@ const router = createBrowserRouter([
     element: <Userdashboard />
   },
   {
+    path:"/admin",
+    element:<Adminpage/>
+  }, 
+  {
     path: "/task/:id",
     element: <Task />
   },
@@ -36,7 +40,6 @@ const router = createBrowserRouter([
     path:"/team",
     element:<Teampage/>
   },
-  
 ])
 
 createRoot(document.getElementById('root')).render(

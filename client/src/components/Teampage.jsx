@@ -146,7 +146,7 @@ const CreateTeamForm = () => {
       </div>
       )) : "no meetings"}
       </div>
-      }
+  }
       
       {team.length == 1 && 
       <div className="grid gap-10">

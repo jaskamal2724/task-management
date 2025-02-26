@@ -65,7 +65,7 @@ const login = async (req, res) => {
       maxAge: 24 * 60 * 60 * 1000,
     });
 
-    res.status(201).json({ message: "You are LogIn" });       //login
+    res.status(201).json({ message: "You are LogIn" , role:user.role});       //login
     console.log("you are logged in")
     return
 
@@ -146,5 +146,19 @@ const logout = async (req, res) => {
   }
 }
 
+const getusers=async (req, res) => {
+  try {
+    const response = await User.find({})
+    if(response){
+      return res.status(200).json(response)
+    }
+    else{
+      return res.status(400).json({msg:"user not found"})
+    }
+  } 
+  catch (error) {
+    console.log("error in fetching users ",error)
+  }
+}
 
-export { signup, login, getProfile, updateProfile , logout};
+export { signup, login, getProfile, updateProfile , logout, getusers};

@@ -40,15 +40,23 @@ const SignIn = () => {
 
     try {
       const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/login`, formData, { withCredentials: true })
-      // console.log("token", response.data.token)
-      // sessionStorage.setItem("token",response.data.token)
-      if (response) {
+      // console.log( response.data.role)
+      
+      if (response.data.role=="Member") {
         setLoading(true)
         setTimeout(() => {
           setLoading(false)
           console.log("logged in")
           navigate("/dashboard")
-        }, 3000)
+        }, 2000)
+      }
+      else if(response.data.role=="Admin"){
+        setLoading(true)
+        setTimeout(() => {
+          setLoading(false)
+          console.log("logged in")
+          navigate("/admin")
+        }, 2000)
       }
     }
     catch (error) {
