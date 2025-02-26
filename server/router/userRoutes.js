@@ -3,7 +3,7 @@ import { signup, login, getProfile, updateProfile, logout,} from "../controller/
 import { addtask, getTask, addSubtask, updateSubtaskStatus, deletetask } from "../controller/task.js";
 
 import authMiddleware from "../middleware/auth.js";
-import { createTeam, createTeamMembers } from "../controller/team.js";
+import { createTeam, createTeamMembers, getTeams } from "../controller/team.js";
 
 const router = express.Router();
 
@@ -18,6 +18,7 @@ router.delete("/delete", deletetask)
 router.post("/logout",logout)
 router.post("/createTeam",authMiddleware, createTeam)
 router.post("/createTeamMember",createTeamMembers)
+router.get("/getTeams",getTeams)
 
 router.get("/profile", getProfile);
 router.put('/profile', updateProfile);

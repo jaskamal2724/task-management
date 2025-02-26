@@ -35,7 +35,8 @@ const router = createBrowserRouter([
   {
     path:"/team",
     element:<Teampage/>
-  }
+  },
+  
 ])
 
 createRoot(document.getElementById('root')).render(

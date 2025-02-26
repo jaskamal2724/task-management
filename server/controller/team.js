@@ -43,4 +43,19 @@ const createTeamMembers=async (req, res) => {
     }
 }
 
-export {createTeam, createTeamMembers}
+const getTeams=async (req, res) => {
+    try {
+        const response = await Team.find({})
+    
+        if(response){
+            return res.status(200).json(response)
+        }
+        else{
+            return res.status(400).json({mag:"no team found"})
+        }
+    } catch (error) {
+        console.log("error in fetching teams ", error)
+    }
+}
+
+export {createTeam, createTeamMembers, getTeams}

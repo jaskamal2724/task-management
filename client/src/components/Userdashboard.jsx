@@ -15,7 +15,7 @@ import { ToastContainer, toast } from "react-toastify"
 const TaskDashboard = () => {
   const navigate = useNavigate()
   const [tasks, setTasks] = useState([])
-    
+
   const gettask = async () => {
     try {
       const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/gettask`)
@@ -34,7 +34,7 @@ const TaskDashboard = () => {
 
   useEffect(() => {
     gettask()
-  },[])
+  }, [])
 
   const calculateProgress = (task) => {
     const totalSubtasks = task.subtasks?.length;
@@ -69,7 +69,7 @@ const TaskDashboard = () => {
         title: newTask.title,
         priority: newTask.priority,
         subtasks: [],
-      },{withCredentials:true})
+      }, { withCredentials: true })
 
       if (response.status == 200) {
         toast.success('🦄 Wow so easy!', {
@@ -81,8 +81,8 @@ const TaskDashboard = () => {
           draggable: true,
           progress: undefined,
           theme: "light",
-          
-          });
+
+        });
         console.log("task added")
       }
       else {
@@ -102,20 +102,20 @@ const TaskDashboard = () => {
   const handlelogout = async () => {
     try {
       const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/logout`)
-      if(response.status==200){
+      if (response.status == 200) {
         console.log("logout success")
         navigate("/signin")
       }
-      else{
+      else {
         console.log("logout failed")
       }
     } catch (error) {
       console.log("error in logout ", error)
     }
-    
+
   }
 
-  const handleteam=()=>{
+  const handleteam = () => {
     navigate(`/team`)
   }
 
@@ -134,30 +134,39 @@ const TaskDashboard = () => {
         theme="light"
       />
 
-      <div
-        className={`p-6 max-w-6xl mx-auto mt-10 min-h-[825px] transition-colors duration-300 `}
-      >
+      <div className={`p-6 max-w-6xl mx-auto mt-10 min-h-[825px] transition-colors duration-300 `}>
+        
+        {/* heading , logout, team , add team */}
+        <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
+          {/* Left Section */}
+          <div className="flex flex-col sm:flex-row items-center gap-2 w-full sm:w-auto">
+            <div className="flex items-center gap-1">
+              <Flag className="h-6 w-6 text-indigo-500" />
+              <h1 className="text-2xl font-bold text-[#fb6f92]">Task Dashboard</h1>
+            </div>
 
-        <div className="flex justify-between items-center mb-6">
-          <div className="flex items-center gap-2">
-            <Flag className="h-6 w-6 text-indigo-500" />
-            <h1 className="text-2xl font-bold text-[#fb6f92]">Task Dashboard</h1>
-            <Button onClick={handlelogout} className="mx-48 bg-[#ffc7c9] flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-[#ff9a9e] hover:shadow-lg">
+            <Button
+              onClick={handlelogout}
+              className="lg:mx-48 md:mx-20 bg-[#ffc7c9] flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-[#ff9a9e] hover:shadow-lg w-full sm:w-auto"
+            >
               <LogOut className="text-[#55559b] transition-all duration-300 group-hover:text-white" />
               <p className="text-[#55559b] transition-all duration-300 group-hover:text-white">Logout</p>
             </Button>
 
-            <Button onClick={handleteam} className="bg-[#ffc7c9] flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-[#ff9a9e] hover:shadow-lg">
+            <Button
+              onClick={handleteam}
+              className="bg-[#ffc7c9] flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 hover:bg-[#ff9a9e] hover:shadow-lg w-full sm:w-auto"
+            >
               <Users className="text-[#55559b] transition-all duration-300 group-hover:text-white" />
               <p className="text-[#55559b] transition-all duration-300 group-hover:text-white">Team</p>
             </Button>
           </div>
 
-
-          <div className="flex items-center gap-4">
+          {/* Right Section */}
+          <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
             <Dialog>
               <DialogTrigger asChild>
-                <Button className="flex items-center gap-2 bg-[#f0f3bd] hover:bg-[#f1f77f]">
+                <Button className="flex items-center gap-2 bg-[#f0f3bd] hover:bg-[#f1f77f] w-full sm:w-auto">
                   <Plus className="h-4 w-4 text-[#05668d]" />
                   <p className="text-[#05668d]">Add Task</p>
                 </Button>
@@ -171,7 +180,6 @@ const TaskDashboard = () => {
                 </DialogHeader>
 
                 <div className="grid gap-6 py-4">
-
                   <div className="grid gap-2">
                     <Label htmlFor="task-title" className="text-[#334155] dark:text-[#cbd5e1] font-medium text-lg">
                       Task Title
@@ -185,10 +193,8 @@ const TaskDashboard = () => {
                     />
                   </div>
 
-
                   <div className="grid gap-3">
                     <Label className="text-[#334155] dark:text-[#cbd5e1] font-medium text-lg text-center">Priority</Label>
-
                     <RadioGroup
                       value={newTask.priority}
                       onValueChange={(value) => setNewTask({ ...newTask, priority: value })}
@@ -218,7 +224,6 @@ const TaskDashboard = () => {
                     </RadioGroup>
                   </div>
 
-
                   <Button
                     onClick={handleAddTask}
                     className="w-full bg-[#60a5fa] text-white font-bold py-2 rounded-lg shadow-lg transition-all duration-300 hover:bg-[#3b82f6] hover:shadow-md hover:scale-105"
@@ -231,6 +236,8 @@ const TaskDashboard = () => {
           </div>
         </div>
 
+
+        {/* task status, tasks */}
         <div className="grid grid-cols-3 gap-16">
 
           <div className="col-span-1 space-y-6">
